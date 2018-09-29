@@ -1,5 +1,7 @@
 import numpy as np
 
+# 参考该网站解释理解：https://blog.csdn.net/aws3217150/article/details/70214422
+
 class Node(object):
     """Node in a computation graph."""
     def __init__(self):
