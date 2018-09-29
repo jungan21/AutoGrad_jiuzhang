@@ -304,6 +304,8 @@ class Executor:
         node_val_results = [node_to_val_map[node] for node in self.eval_node_list]
         return node_val_results
 
+# 因此gradients方法最终返回的不是真实的梯度，而是梯度计算图，然后可以复用Executor，计算实际的梯度值
+
 # reverse mode 的自动微分reverse mode的自动微分，要求从输出到输入节点，按照先后依赖关系，对各个节点求取输出对于当前节点的梯度，
 # 那么和我们上面的run函数刚好相反，为了得到正确计算节点顺序，我们可以将图节点的拓扑排序倒序即可
 # reverse mode 的自动微分reverse mode的自动微分，要求从输出到输入节点，按照先后依赖关系，对各个节点求取输出对于当前节点的梯度，那么和我们上面介绍的刚好相反，为了得到正确计算节点顺序，我们可以将图节点的拓扑排序倒序即可
