@@ -300,6 +300,8 @@ class Executor:
         node_val_results = [node_to_val_map[node] for node in self.eval_node_list]
         return node_val_results
 
+# output_node 就是 y, node_list就是你想求y 对node_list中每个node的偏导数
+# 该函数实际上把每个节点的导数都算出来了，最后通过这句话，挑选出在node_list中的：grad_node_list = [node_to_output_grad[node] for node in node_list]
 def gradients(output_node, node_list):   #  douput_node/dnode_list
     """Take gradient of output node with respect to each node in node_list.
 
