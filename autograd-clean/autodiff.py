@@ -213,6 +213,7 @@ class MatMulOp(Op):
         """
         return [matmul_op(output_grad, node.inputs[1], node.matmul_attr_trans_A, not node.matmul_attr_trans_B), matmul_op(node.inputs[0], output_grad, not node.matmul_attr_trans_A, node.matmul_attr_trans_B)]
 
+#PlaceHolderOp，它的作用就如同名字，起到占位符的作用，也就是自动微分中的变量，它不会参与实际计算，只等待用户给他提供实际值，因此他的实现如下
 class PlaceholderOp(Op):
     """Op to feed value to a nodes."""
     def __call__(self):
