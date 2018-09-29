@@ -300,8 +300,9 @@ class Executor:
         node_val_results = [node_to_val_map[node] for node in self.eval_node_list]
         return node_val_results
 
-# output_node 就是 y, node_list就是你想求y 对node_list中每个node的偏导数
-# 该函数实际上把每个节点的导数都算出来了，最后通过这句话，挑选出在node_list中的：grad_node_list = [node_to_output_grad[node] for node in node_list]
+# 1. output_node 就是 y, node_list就是你想求y 对node_list中每个node的偏导数
+# 2. 该函数实际上把每个节点的导数都算出来了，最后通过这句话，挑选出在node_list中的：grad_node_list = [node_to_output_grad[node] for node in node_list]
+# 3. 进入该函数前，我们已经有了正向图， 运行完该函数 得到了反向图
 def gradients(output_node, node_list):   #  douput_node/dnode_list
     """Take gradient of output node with respect to each node in node_list.
 
@@ -319,6 +320,7 @@ def gradients(output_node, node_list):   #  douput_node/dnode_list
     # a map from node to the gradient of that node
     node_to_output_grad = {}
     # Traverse graph in reverse topological order given the output_node that we are taking gradient wrt.
+    # Note: need reverse the topo sort node list, so that it will biuild reversed graph
     reverse_topo_order = list(reversed(find_topo_sort([output_node])))
 
     # 梯度初值 都是  0
@@ -340,6 +342,7 @@ def gradients(output_node, node_list):   #  douput_node/dnode_list
         ###  a + b = c
         ###  a * d = e   dL/dc* dc/da   + dL/de * de/dc
         for inp, grad in zip(node.inputs, node.op.gradient(node, node_to_output_grad[node])):
+            # below line "+" operation will build NODE and graph
             node_to_output_grad[inp] = node_to_output_grad[inp] + grad   ## +  will build a new NODE !!!!
     # Collect results for gradients requested.
     grad_node_list = [node_to_output_grad[node] for node in node_list]
